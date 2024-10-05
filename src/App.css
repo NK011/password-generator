@@ -3,7 +3,9 @@
     flex-direction: column;
     justify-content: center;
     height: 100vh;
-    background-color: whitesmoke;
+    background-color: black;
+    background-image: radial-gradient(circle at top left, gray 2.5%, black 70%);
+    color: white;
 }
 
 .App__card {
@@ -11,6 +13,9 @@
     min-width: 28rem;
     max-width: 40rem;
     margin: auto;
-    border: 1px solid rgba(0, 0, 0, 0.5);
-    padding: 0.5rem 0.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 1rem;
+    padding: 1rem 2rem;
+    background-image: radial-gradient(circle at top left, rgba(255, 255, 255, 0.144), transparent);
+    box-shadow: 0 0 5px 5px rgba(255, 255, 255, 0.144) inset;
 }

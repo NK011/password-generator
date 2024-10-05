@@ -10,7 +10,10 @@ function App() {
         <div className="App">
             <div className="App__card">
                 <CardHeader generatedPassword={generatedPassword} />
-                <PasswordForm setGeneratedPassword={setGeneratedPassword} />
+                <PasswordForm
+                    generatedPassword={generatedPassword}
+                    setGeneratedPassword={setGeneratedPassword}
+                />
             </div>
         </div>
     );

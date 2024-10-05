@@ -9,7 +9,7 @@ function FormField({ type, name, label, onChange }) {
     );
 }
 
-function PasswordForm({ setGeneratedPassword = () => {} }) {
+function PasswordForm({ generatedPassword, setGeneratedPassword = () => {} }) {
     const defaultFieldValues = {
         passwordLength: 8,
         uppercase: false,
@@ -22,6 +22,7 @@ function PasswordForm({ setGeneratedPassword = () => {} }) {
     const handleInputChange = (e) => {
         const values = { ...formState };
         const { name, checked } = e?.target;
+        console.log(name, checked);
         values[name] = checked;
         setFormState(values);
     };
@@ -29,29 +30,56 @@ function PasswordForm({ setGeneratedPassword = () => {} }) {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        let tempPassword = ""
+        let tempPassword = "";
 
-        if(formState.uppercase) {
-            tempPassword += "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+        if (formState.uppercase) {
+            tempPassword += "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         }
-        if(formState.lowercase) {
-            tempPassword += "abcdefghijklmnopqrstuvwxyz"
+        if (formState.lowercase) {
+            tempPassword += "abcdefghijklmnopqrstuvwxyz";
         }
-        if(formState.numbers) {
-            tempPassword += "1234567890"
+        if (formState.numbers) {
+            tempPassword += "1234567890";
         }
-        if(formState.numbers)
+        if (formState.specialChar) {
+            tempPassword += "!@#$%&";
+        }
+
+        if (tempPassword.length === 0) {
+            window.alert("Please select an option to generate a new password");
+            return;
+        }
+
+        let generatedPassword = "";
+        for (let i = 0; i < formState.passwordLength; i++) {
+            generatedPassword += tempPassword.charAt(
+                Math.floor(Math.random() * tempPassword.length)
+            );
+        }
+
+        setGeneratedPassword(generatedPassword);
+    };
+
+    const handleReset = () => {
+        setFormState(defaultFieldValues);
+        setGeneratedPassword("");
     };
     return (
         <form className={styles.form__container} onSubmit={handleSubmit}>
-            <div className={styles.form__row}>
+            <div className={styles.form__rangeRow}>
+                <p>Password Length: {formState.passwordLength}</p>
                 <input
                     type="range"
                     name="passwordLength"
                     min="8"
                     max="20"
                     className={styles.form__rangeField}
-                    onChange={handleInputChange}
+                    onChange={(e) => {
+                        setFormState((prev) => ({
+                            ...prev,
+                            passwordLength: e.target.value,
+                        }));
+                    }}
                     value={formState["passwordLength"]}
                 />
             </div>
@@ -88,7 +116,21 @@ function PasswordForm({ setGeneratedPassword = () => {} }) {
                 />
             </div>
             <div className={styles.form__row}>
-                <FormField type="submit" name="submit" />
+                {generatedPassword ? (
+                    <button
+                        type="button"
+                        className={styles.primary__button}
+                        onClick={handleReset}
+                    >
+                        Reset
+                    </button>
+                ) : (
+                    <input
+                        className={styles.primary__button}
+                        type="submit"
+                        name="submit"
+                    />
+                )}
             </div>
         </form>
     );
